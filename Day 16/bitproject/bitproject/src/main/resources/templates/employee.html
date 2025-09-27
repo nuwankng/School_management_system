@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bit 2024 | Employee Module</title>
+    <link rel="icon" href="/images/sun.png">
+    <!--link D5-1 css file-->
+    <link rel="stylesheet" href="/css/employee.css">
+
+    <!--link fontawesome css file-->
+    <link rel="stylesheet" href="/fontawesome-free-6.6.0/css/all.min.css">
+
+    <!--link bootstrap files-->
+    <link href="/bootstrap-5.2.3/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="/bootstrap-5.2.3/css/bootstrap.min.css">
+    <script src="/bootstrap-5.2.3/js/bootstrap.bundle.min.js"></script>
+
+    <script src="/jquery/jquery-3.7.1.min.js"></script>
+
+    <!--Link data tables files-->
+    <link href="/datatables/datatables.min.css" rel="stylesheet">
+    <script src="/datatables/datatables.min.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row m-2">
+            <div class="col-12 text-center fw-bold p-2 title">
+                <h2><i class="fa-solid fa-user-secret"></i>Employee Management</h2>
+            </div>
+
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-6">
+                <!-- <div id="modifyButton">
+
+                    <button type="button" onclick="employeeFormRefill(window['editOb'], window['editRowIndex']);" class="btn btn-warning">
+                        Edit
+                    </button>
+
+
+
+                    <button type="button"  onclick="employeeDelete(window['editOb'], window['editRowIndex']);"  class="btn btn-danger">
+                        Delete
+                    </button>
+
+
+
+                    <button type="button"  onclick="employeeView(window['editOb'], window['editRowIndex']);" class="btn btn-success">
+                        View
+                    </button>
+
+                </div> -->
+            </div>
+
+            <div class="col-6 text-end">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#modalEmployeeForm">
+                    Add New Employee
+                </button>
+
+
+
+            </div>
+        </div>
+
+        <div class="modal" tabindex="-1" id="modalEmployeeForm" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Employee</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-body form-area">
+                                <form id="FormEmployee" onsubmit="return false">
+
+                                    <!--Start Required mark-->
+                                    <div class="row mt-2">
+                                        <div class="col-12 fw-bold text-end">
+                                            <p>Required <span class="text-danger">*
+                                                </span></p>
+                                        </div>
+                                    </div>
+                                    <!--end Required mark-->
+
+                                    <!--Start Full Name/Calling name-->
+                                    <div class="row mt-2">
+
+                                        <label for="textFullName" class="form-label col-1 fw-bold">Full Name :<span
+                                                class="text-danger">*</span> </label>
+                                        <div class="col-5">
+                                            <input type="text" class="form-control" id="textFullName"
+                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                data-bs-title="Please Enter Full Name" placeholder="Enter Full Name">
+                                        </div>
+
+
+                                        <label for="textCallingName" class="form-label fw-bold col-2">Calling Name <span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-4">
+                                            <input type="text" class="form-control" id="textCallingName"
+                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                data-bs-title="Please Select Calling Name"
+                                                onchange="callingNameValidator(this)" placeholder="Enter Calling Name"
+                                                list="dlCallingname">
+                                            <datalist id="dlCallingname">
+                                                <option value="part 1">
+                                                <option value="part 2">
+                                                <option value="part 3">
+                                            </datalist>
+                                            <div class="form-text">Select Valid Calling Name</div>
+
+
+                                        </div>
+
+                                    </div>
+                                    <!--End Full Name/Calling name-->
+
+                                    <!--Start NIC/Gender/DoB-->
+
+                                    <div class="row mt-2">
+
+                                        <label for="textNIC" class="form-label fw-bold col-1">NIC :
+                                            <span class="text-danger">*</span> </label>
+                                        <div class="col-3">
+                                            <input type="text" class="form-control" id="textNIC"
+                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                data-bs-title="Please Enter Valid NIC" onkeyup="nicValidator(this);"
+                                                placeholder="Enter Valid NIC">
+                                            <div class="form-text">Ex:000000000V/000000000000
+
+                                            </div>
+                                        </div>
+
+
+                                        <label for="" class="form-label fw-bold col-1">Gender :<span
+                                                class="text-danger">*</span>
+                                        </label>
+
+                                        <div class="col-2">
+                                            <div class="form-check form-check-inline">
+                                                <input onchange="employee.gender=this.value;" type="radio"
+                                                    id="radioMale" name="gender" value="male">
+                                                <label for="radioMale" class="form-check-label fw-bold">Male</label>
+                                            </div>
+
+                                            <div class="form-check form-check-inline">
+                                                <input onchange="employee.gender=this.value;" type="radio"
+                                                    id="radioFemale" name="gender" value="female">
+                                                <label for="radioFemale" class="form-check-label fw-bold">Female</label>
+                                            </div>
+
+                                        </div>
+
+
+
+                                        <div class="col-1"></div>
+
+                                        <label for="dteDOB" class="form-label fw-bold col-1">DOB :<span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-3">
+                                            <input onkeydown="return false" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" data-bs-title="Please Select Date of Birth"
+                                                onchange="dateValidator(this,'employee','dob')" type="date"
+                                                class="form-control" id="dteDOB">
+
+                                        </div>
+                                    </div>
+
+                                    <!--End Gender/DOB/NIC-->
+
+                                    <!--Start Email/Civil Status/Designation-->
+                                    <div class="row mt-2">
+
+                                        <label for="textEmail" class="form-label fw-bold col-1">Email :<span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-3">
+                                            <input type="email" required data-bs-toggle="tooltip"
+                                                data-bs-placement="top" data-bs-title="Please Enter Valid Email"
+                                                onkeyup="textValidator(this,'^[A-Za-z0-9]{5,20}[@][a-z]{4,8}[.][a-z]{2,3}$','employee','email')"
+                                                class="form-control" placeholder="Enter Email Address" id="textEmail">
+                                            <div class="form-text">Ex :abc@gmail.com</div>
+                                        </div>
+
+
+
+                                        <label for="selectCivilStatus" class="form-label fw-bold col-1">Civil
+                                            Status:<span class="text-danger">*</span></label>
+                                        <div class="col-3">
+                                            <select id="selectCivilStatus" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" data-bs-title="Please Select Civil status"
+                                                onchange="selectStaticElementValidator(this,'employee','civil_status')"
+                                                class="form-select">
+                                                <option value="" selected disabled>Select Civil Status</option>
+                                                <option value="Single">Single</option>
+                                                <option value="Married">Married</option>
+                                            </select>
+                                        </div>
+
+
+                                        <label for="selectDesignation"
+                                            class="form-label fw-bold col-2">Designation:<span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-2">
+                                            <select id="selectDesignation" class="form-select" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" data-bs-title="Please Select Designation"
+                                                onchange="selectDynamicElementValidator(this,'employee','designation_id')">
+                                                <option value="" selected disabled>Select Designation</option>
+                                                <option value="manager">Manager</option>
+                                                <option value="casheier">Casheier</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <!--End Email/Civil Status/Designation-->
+
+                                    <!--start Employee status/Mobile/Land No-->
+                                    <div class="row mt-2">
+                                        <label for="selectEmployeeStatus" class="form-label fw-bold col-2">Employee
+                                            Status:<span class="text-danger">*</span></label>
+                                        <div class="col-2">
+                                            <select id="selectEmployeeStatus" class="form-select"
+                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                data-bs-title="Please Select Employee Status "
+                                                onchange="selectDynamicElementValidator(this,'employee','employee_status_id')">
+                                                <option value="" selected disabled>Select Employee Status</option>
+                                                <option value="working">Working</option>
+                                                <option value="resign">Resign</option>
+                                            </select>
+
+                                        </div>
+
+
+                                        <label for="textMobile" class="form-label fw-bold col-2">Mobile No :<span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-2">
+                                            <input type="text" required data-bs-toggle="tooltip" data-bs-placement="top"
+                                                data-bs-title="Please Enter Valid Mobile Number"
+                                                onkeyup="textValidator(this,'^[0][7][01245678][0-9]{7}$','employee','mobileno')"
+                                                class="form-control" placeholder="Enter Mobile No" id="textMobile">
+                                        </div>
+
+
+                                        <label for="textLandNo" class="form-label fw-bold col-1">Land No :</label>
+                                        <div class="col-3">
+                                            <input type="text" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                data-bs-title="Please Enter Valid Land Number"
+                                                onkeyup="textValidator(this,'^[0][12345689][0-9]{8}$','employee','landno')"
+                                                class="form-control" placeholder="Enter Land No" id="textLandNo">
+                                        </div>
+                                    </div>
+                                    <!--End Employee Status/Mobile/land NO-->
+
+                                    <!--Start address/note-->
+
+                                    <div class="row mt-2">
+                                        <div class="col">
+                                            <div class="form-floating">
+                                                <textarea required placeholder="Enter Address" id="textAdress"
+                                                    class="form-control"
+                                                    onkeyup="textValidator(this,'^([A-Za-z0-9\\/]{1,20}[,][\\s])+([A-Z][a-z]{2,20})$','employee','address')"></textarea>
+                                                <label for="textAdress" class="form-label fw-bold">Address : <span
+                                                        class="text-danger">*</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col">
+                                            <div class="form-floating">
+                                                <textarea  placeholder="Enter Note" id="textNote"
+                                                    class="form-control"
+                                                    onkeyup="textValidator(this,'^([A-Za-z0-9\\/]{1,20}[.]?[\\s]?)+$','employee','note')"></textarea>
+                                                <label for="textNote" class="form-label fw-bold">Note : <span
+                                                        class="text-danger"></span>
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!--End address/note-->
+
+
+
+
+                                    <!-- Start Buttons-->
+                                    <div class="row mt-2">
+                                        <div class="col-6 text-start">
+                                            <button type="button" class="btn btn-outline-info me-2"><i
+                                                    class="fa-solid fa-eraser"></i>Clear</button>
+
+
+                                            <div id="modifyButton">
+
+                                                <button type="button"
+                                                    onclick="employeeDelete(window['editOb'], window['editRowIndex']);"
+                                                    class="btn btn-danger">
+                                                    Delete
+                                                </button>
+
+
+
+                                                <button type="button"
+                                                    onclick="employeeView(window['editOb'], window['editRowIndex']);"
+                                                    class="btn btn-success">
+                                                    View
+                                                </button>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 text-end">
+                                            <button type="submit" onclick="buttonEmployeeUpdate()"
+                                                class="btn btn-outline-warning me-2"><i
+                                                    class="fa-solid fa-pen"></i>Update</button>
+
+                                            <button type="submit" onclick="buttonEmployeeSubmit()"
+                                                class="btn btn-outline-success"><i
+                                                    class="fa-solid fa-user-plus"></i>Add</button>
+
+                                        </div>
+
+                                    </div>
+                                    <!-- End Buttons-->
+
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table.hover table.striped table-area" id="tableEmployee">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <!--<th>Emp No</th>-->
+                                    <th>Full Name</th>
+                                    <th>NIC</th>
+                                    <th>Mobile No</th>
+                                    <th>DOB</th>
+                                    <th>DOB Year</th>
+                                    <th>Designation</th>
+                                    <th>status</th>
+                                    <th>Modify</th>
+                                </tr>
+                            <tbody id="tableEmployeeBody">
+
+                                <tr>
+                                    <td>1</td>
+                                    <td>R001</td>
+                                    <td>Koshila Madhuwanthi</td>
+                                    <td>928318756V</td>
+                                    <td>0718471773</td>
+                                    <td>working</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                Modify
+                                            </button>
+
+                                            <ul class="dropdown-menu">
+
+                                                <li><a class="dropdown-item" href="#"> <button type="button"
+                                                            class="btn btn-outline-warning fw-bold">Edit</button></a>
+                                                </li>
+
+                                                <li><a class="dropdown-item" href="#"><button type="button"
+                                                            class="btn btn-outline-danger">Delete</button></a>
+                                                </li>
+
+                                                <li><a class="dropdown-item" href="#"><button type="button"
+                                                            class="btn btn-outline-success">View</button></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+
+                                    </td>
+
+
+                                <tr>
+                                    <td>2</td>
+                                    <td>R002</td>
+                                    <td>Nuwan Buddhika</td>
+                                    <td>918318756V</td>
+                                    <td>0718445673</td>
+                                    <td>working</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                Modify
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"> <button type="button"
+                                                            class="btn btn-outline-warning fw-bold">Edit</button></a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="#"><button type="button"
+                                                            class="btn btn-outline-danger">Delete</button></a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="#"><button type="button"
+                                                            class="btn btn-outline-success">View</button></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>R003</td>
+                                    <td>Sehandu Mihinsa</td>
+                                    <td>938318756V</td>
+                                    <td>0778471773</td>
+                                    <td>working</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                Modify
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"> <button type="button"
+                                                            class="btn btn-outline-warning fw-bold">Edit</button></a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="#"><button type="button"
+                                                            class="btn btn-outline-danger">Delete</button></a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="#"><button type="button"
+                                                            class="btn btn-outline-success">View</button></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>R004</td>
+                                    <td>Kalpa Sandaruwan</td>
+                                    <td>968318756V</td>
+                                    <td>0778471773</td>
+                                    <td>working</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                Modify
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"> <button type="button"
+                                                            class="btn btn-outline-warning fw-bold">Edit</button></a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="#"><button type="button"
+                                                            class="btn btn-outline-danger">Delete</button></a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="#"><button type="button"
+                                                            class="btn btn-outline-success">View</button></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>R005</td>
+                                    <td>Sahan piyumal</td>
+                                    <td>948318756V</td>
+                                    <td>0758471773</td>
+                                    <td>working</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                Modify
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#"> <button type="button"
+                                                            class="btn btn-outline-warning fw-bold">Edit</button></a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="#"><button type="button"
+                                                            class="btn btn-outline-danger fw-bold">Delete</button></a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="#"><button type="button"
+                                                            class="btn btn-outline-success fw-bold">View</button></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+
+                                    </td>
+                                </tr>
+
+                    </div>
+                    </tr>
+
+                    </tr>
+
+                    </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- option 02  view Employee-->
+    <div class="modal" tabindex="-1" id="modalEmployeeView" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">View Employee</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body form-area">
+                            <table class="table table-hover table-striped" id="tableEmployeeView">
+                                <tr>
+                                    <th> Employee Fullname</th>
+                                    <td id="tdEmployeeFullname"></td>
+                                </tr>
+                                <tr>
+                                    <th> Employee Calling Name</th>
+                                    <td id="tdEmployeeCallingname"></td>
+                                </tr>
+                                <tr>
+                                    <th> Employee NIC</th>
+                                    <td id="tdEmployeenic"></td>
+                                </tr>
+                                <tr>
+                                    <th> Employee Designation</th>
+                                    <td id="tdEmployeeDesignation"></td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-info fw-bold" onclick="buttonPrintRow()">Print</button>
+                </div>
+            </div>
+        </div>
+        <script src="/script/reusableTableFunction.js"></script>
+        <script src="/script/common.js"></script>
+        <script src="/uicontroller/employee.js"></script>
+        <script src="/script/validationFunction.js"></script>
+        <script src="/script/sweetalert.min.js"></script>
+
+</body>
+
+</html>
